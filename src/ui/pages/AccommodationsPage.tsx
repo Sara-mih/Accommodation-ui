@@ -4,6 +4,7 @@ import AddIcon from '@mui/icons-material/Add';
 import useAccommodations from '../../hooks/useAccommodations';
 import AccommodationGrid from '../components/accommodation/AccommodationGrid';
 import AccommodationFormModal from '../components/accommodation/AccommodationFormModal';
+import AccommodationDetailsModal from '../components/accommodation/AccommodationDetailsModal';
 import DeleteConfirmDialog from '../components/common/DeleteConfirmDialog';
 import type { Accommodation } from '../../api/types/accommodation';
 import type { AccommodationCreateRequest } from '../../api/accommodationApi';
@@ -16,6 +17,8 @@ const AccommodationsPage = () => {
     const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
     const [selectedAccommodation, setSelectedAccommodation] = useState<Accommodation | null>(null);
     const [deleteId, setDeleteId] = useState<number | null>(null);
+    const [infoModalOpen, setInfoModalOpen] = useState(false);
+    const [infoAccommodation, setInfoAccommodation] = useState<Accommodation | null>(null);
 
     const handleEdit = (accommodation: Accommodation) => {
         setSelectedAccommodation(accommodation);
@@ -45,7 +48,8 @@ const AccommodationsPage = () => {
     };
 
     const handleInfo = (accommodation: Accommodation) => {
-        setSelectedAccommodation(accommodation);
+        setInfoAccommodation(accommodation);
+        setInfoModalOpen(true);
     };
 
     return (
@@ -94,6 +98,13 @@ const AccommodationsPage = () => {
                 title="Delete Accommodation"
                 message="Are you sure you want to delete this accommodation?"
             />
+            {infoAccommodation && (
+                <AccommodationDetailsModal
+                    open={infoModalOpen}
+                    onClose={() => setInfoModalOpen(false)}
+                    accommodationId={infoAccommodation.id.toString()}
+                />
+            )}
         </Container>
     );
 };
