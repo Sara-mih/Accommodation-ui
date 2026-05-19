@@ -4,14 +4,16 @@ import HostCard from './HostCard';
 
 interface HostGridProps {
     hosts: Host[];
+    onEdit: (host: Host) => void;
+    onDelete: (id: number) => void;
 }
 
-const HostGrid = ({ hosts }: HostGridProps) => {
+const HostGrid = ({ hosts, onEdit, onDelete }: HostGridProps) => {
     return (
         <Grid container spacing={{ xs: 2, md: 3 }}>
             {hosts.map((host) => (
                 <Grid key={host.id}>
-                    <HostCard host={host}/>
+                    <HostCard host={host} onEdit={onEdit} onDelete={onDelete}/>
                 </Grid>
             ))}
         </Grid>

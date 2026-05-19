@@ -2,8 +2,9 @@ import {
     AppBar, Box, Button, Drawer, IconButton, List, ListItem, ListItemButton, ListItemText, Toolbar, Typography
 } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useState } from 'react';
+import { useAuth } from '../../../contexts/AuthContext';
 
 const pages = [
     { path: '/', name: 'Home' },
@@ -14,15 +15,20 @@ const pages = [
 
 const Header = () => {
     const [drawerOpen, setDrawerOpen] = useState(false);
+    const { isAuthenticated, logout, user } = useAuth();
+    const navigate = useNavigate();
+
+    const handleLogout = () => {
+        logout();
+        navigate('/');
+    };
+
     return (
         <Box>
             <AppBar position='static'>
                 <Toolbar>
                     <IconButton
-                        size='large'
-                        edge='start'
-                        color='inherit'
-                        aria-label='menu'
+                        size='large' edge='start' color='inherit' aria-label='menu'
                         sx={{ mr: 2, display: { md: 'none' } }}
                         onClick={() => setDrawerOpen(true)}
                     >
@@ -39,6 +45,21 @@ const Header = () => {
                                 </Button>
                             </Link>
                         ))}
+                    </Box>
+                    <Box>
+                        {isAuthenticated ? (
+                            <>
+                                <Typography variant='body2' sx={{ color: 'white', display: 'inline', mr: 2 }}>
+                                    {user?.username}
+                                </Typography>
+                                <Button color='inherit' onClick={handleLogout}>Logout</Button>
+                            </>
+                        ) : (
+                            <>
+                                <Button color='inherit' onClick={() => navigate('/login')}>Login</Button>
+                                <Button color='inherit' onClick={() => navigate('/register')}>Register</Button>
+                            </>
+                        )}
                     </Box>
                 </Toolbar>
             </AppBar>

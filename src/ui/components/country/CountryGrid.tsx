@@ -4,14 +4,16 @@ import CountryCard from './CountryCard';
 
 interface CountryGridProps {
     countries: Country[];
+    onEdit: (country: Country) => void;
+    onDelete: (id: number) => void;
 }
 
-const CountryGrid = ({ countries }: CountryGridProps) => {
+const CountryGrid = ({ countries, onEdit, onDelete }: CountryGridProps) => {
     return (
         <Grid container spacing={{ xs: 2, md: 3 }}>
             {countries.map((country) => (
                 <Grid key={country.id}>
-                    <CountryCard country={country}/>
+                    <CountryCard country={country} onEdit={onEdit} onDelete={onDelete}/>
                 </Grid>
             ))}
         </Grid>
